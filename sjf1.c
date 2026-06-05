@@ -1,13 +1,19 @@
 #include <stdio.h>
-
+#define sizearr 20
 int main(){
-    //P_id for Process id, Bt for Brust Time, Wt for Waiting Time ,At for Arival Time;
-    int P_id[20],Bt[20],Wt[20],At[20],Tat[20],Ct[20],is_completed[20]={0},ATat=0,AWt=0;
-    int i,P=0;
+
+/*
+ P_id for Process id, Bt for Brust Time, Wt for Waiting Time, At for Arival Time;
+ Tat for Turn Around Time,Ct for Completation Time
+ ATat For Avarage Turn Around Time,AWt for Average Waitiing Time
+ P for Process Numbers
+*/
+    int P_id[sizearr],Bt[sizearr],Wt[sizearr],At[sizearr],Tat[sizearr],Ct[sizearr],is_completed[sizearr]={0};
+    int ATat=0,AWt=0,i,P=0;
     retake:
     printf("How Much Process do You Have-");
     scanf("%d",&P);
-
+//taking input data 
     printf("Press TAB to Enter The Process details--\n P_id \tBt\tAt\n");
     for(i=0;i<P;i++){
         printf(" P%d\t",i);
@@ -16,6 +22,7 @@ int main(){
         scanf("%d",&At[i]);
     }
     int j;
+//printing the recent input data 
     printf("\nP_id \tBt\tAt\n");
     for(j=0;i>j;j++){
         printf("P%d\t%d\t%d\n",P_id[j],Bt[j],At[j]);
@@ -59,7 +66,7 @@ int main(){
             }
         }
     }
-    // sjf Logic
+// sjf Logic
     int current_time=0,completed=0;
     while(completed != P){
         int min_bt=9999999;
@@ -76,23 +83,22 @@ int main(){
         }
         
         if(min_index != -1){
+        //caculating the Compitition Time
             current_time += Bt[min_index];
             Ct[min_index]=current_time;
-        
+        //calcuating the Turn Around Time
+            Tat[min_index]=Ct[min_index]-At[min_index];
+            Wt[min_index]=Tat[min_index]-Bt[min_index];
+        //caculating the Avarage Waiting Time
+            ATat += Tat[min_index];
+            AWt += Wt[min_index];
 
-        Tat[min_index]=Ct[min_index]-At[min_index];
-        Wt[min_index]=Tat[min_index]-Bt[min_index];
-
-        ATat += Tat[min_index];
-        AWt += Wt[min_index];
-
-        is_completed[min_index]=1;
-        completed++;
+            is_completed[min_index]=1;
+            completed++;
         }else{
             current_time++;
         }
     }
-
 
     // Print Final Results
     printf("\n-------------------------------------------------\n");
